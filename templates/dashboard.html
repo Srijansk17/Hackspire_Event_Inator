@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Murder Mystery Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style_dash.css') }}">
+</head>
+<body class="dashboard">
+  <div class="container">
+    
+    <!-- Left panel -->
+    <div class="left-panel">
+      <a href="{{ url_for('backstory') }}" class="btn">Backstory</a>
+      <a href="#" class="btn">Testimony</a>
+    </div>
+
+    <!-- Right panel: Box of Clues -->
+    <div class="right-panel">
+      <h2>Box of Clues</h2>
+
+      <!-- Add new clue -->
+      <form method="POST" action="/dashboard" class="clue-form" autocomplete="off">
+        <input type="text" name="clue" placeholder="Type your clue..." required autocomplete="off">
+        <button type="submit">Add</button>
+      </form>
+
+      <!-- List of saved clues -->
+      <ul class="clue-list">
+        {% for clue in clues %}
+        <li>
+          {{ clue[1] }}
+          <form method="POST" action="/delete_clue/{{ clue[0] }}" style="display:inline;">
+            <button class="delete-btn" title="Delete">✖</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Chatbot Toggle Button -->
+<div id="chatbot-toggle">
+  💬
+</div>
+
+<!-- Chatbot Container -->
+<div id="chatbot-container">
+  <div id="chatbot-header">
+    MurderBot 🕵️
+    <span id="close-chatbot">✖</span>
+  </div>
+  <div id="chatbot-messages"></div>
+  <input type="text" id="chatbot-input" placeholder="Ask something..." />
+</div>
+
+<script>
+  const chatbotToggle = document.getElementById("chatbot-toggle");
+  const chatbotContainer = document.getElementById("chatbot-container");
+  const closeChatbot = document.getElementById("close-chatbot");
+  const chatbotMessages = document.getElementById("chatbot-messages");
+  const chatbotInput = document.getElementById("chatbot-input");
+
+  chatbotToggle.onclick = () => {
+    chatbotContainer.style.display = "flex";
+    chatbotToggle.style.display = "none";
+  };
+
+  closeChatbot.onclick = () => {
+    chatbotContainer.style.display = "none";
+    chatbotToggle.style.display = "block";
+  };
+
+  chatbotInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter" && chatbotInput.value.trim()) {
+      const userMsg = chatbotInput.value;
+      chatbotMessages.innerHTML += `<div class="chat-message user">🧍 ${userMsg}</div>`;
+      chatbotMessages.innerHTML += `<div class="chat-message bot">🤖 I'll get back to you soon...</div>`;
+      chatbotInput.value = "";
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+  });
+</script>
+
+</body>
+</html>

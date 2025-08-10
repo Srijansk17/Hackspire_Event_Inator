@@ -1,0 +1,47 @@
+/* Dashboard background */
+body.dashboard {
+    background: url('image.png') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Container */
+.dashboard-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 0 30px crimson;
+}
+
+/* Buttons */
+.button-group {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.mystery-btn {
+    padding: 12px 25px;
+    font-size: 18px;
+    background: crimson;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: 0.3s;
+    box-shadow: 0 0 10px red;
+}
+
+.mystery-btn:hover {
+    background: darkred;
+    box-shadow: 0 0 15px white;
+}

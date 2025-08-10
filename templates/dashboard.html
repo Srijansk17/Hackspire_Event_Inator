@@ -4,7 +4,163 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Murder Mystery Dashboard</title>
+  <!-- Link to your existing static CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style_dash.css') }}">
+  <!-- Tailwind CSS for modern styling -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Inter Font for a clean look -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Custom styles for the pop-up chatbot */
+    body {
+        font-family: 'Inter', sans-serif;
+        /* Ensure body has relative positioning if not already */
+        position: relative;
+    }
+
+    #chatbot-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #4299e1; /* Blue button */
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000; /* Ensure it's on top */
+      transition: all 0.3s ease-in-out;
+    }
+
+    #chatbot-toggle:hover {
+        background-color: #3182ce;
+        transform: scale(1.05);
+    }
+
+    #chatbot-container {
+      position: fixed;
+      bottom: 90px; /* Above the toggle button */
+      right: 20px;
+      background-color: #2d3748; /* Slightly lighter dark background for the chat box */
+      border-radius: 1rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 380px; /* Compact width for pop-up */
+      height: 500px; /* Fixed height for pop-up */
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 999; /* Below toggle, but above other content */
+      transform: translateY(100%); /* Start off-screen */
+      opacity: 0;
+      pointer-events: none; /* Disable interaction when hidden */
+      transition: all 0.3s ease-in-out;
+    }
+
+    #chatbot-container.open {
+        transform: translateY(0); /* Slide into view */
+        opacity: 1;
+        pointer-events: auto; /* Enable interaction */
+    }
+
+    #chatbot-header {
+      background-color: #4a5568;
+      padding: 0.75rem 1rem;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #a0aec0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #close-chatbot {
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #cbd5e0;
+      transition: color 0.2s;
+    }
+    #close-chatbot:hover {
+      color: #e53e3e; /* Red on hover */
+    }
+
+    #chatbot-messages {
+      flex-grow: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      background-color: #1a202c; /* Message background */
+    }
+
+    .chat-message {
+      max-width: 85%;
+      padding: 0.6rem 0.9rem;
+      border-radius: 0.75rem;
+      word-wrap: break-word;
+      font-size: 0.95rem;
+    }
+
+    .chat-message.user {
+      background-color: #4299e1; /* Blue for user messages */
+      align-self: flex-end;
+      color: white;
+      border-bottom-right-radius: 0.25rem;
+    }
+
+    .chat-message.bot {
+      background-color: #9f7aea; /* Purple for bot messages */
+      align-self: flex-start;
+      color: white;
+      border-bottom-left-radius: 0.25rem;
+    }
+
+    #chatbot-input-area {
+      display: flex;
+      padding: 0.75rem 1rem;
+      background-color: #4a5568;
+      border-bottom-left-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+    }
+
+    #chatbot-input {
+      flex-grow: 1;
+      padding: 0.6rem 0.9rem;
+      border: none;
+      border-radius: 0.5rem;
+      background-color: #cbd5e0; /* Light background for input */
+      color: #2d3748;
+      font-size: 0.95rem;
+      outline: none;
+    }
+    #chatbot-input::placeholder {
+      color: #718096;
+    }
+
+    #send-button {
+      margin-left: 0.75rem;
+      padding: 0.6rem 1.2rem;
+      background-color: #4299e1;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.2s ease-in-out;
+    }
+    #send-button:hover {
+      background-color: #3182ce;
+    }
+  </style>
 </head>
 <body class="dashboard">
   <div class="container">
@@ -48,11 +204,14 @@
 <!-- Chatbot Container -->
 <div id="chatbot-container">
   <div id="chatbot-header">
-    MurderBot 🕵️
+    Agent 007
     <span id="close-chatbot">✖</span>
   </div>
   <div id="chatbot-messages"></div>
-  <input type="text" id="chatbot-input" placeholder="Ask something..." />
+  <div id="chatbot-input-area">
+    <input type="text" id="chatbot-input" placeholder="Ask something..." />
+    <button id="send-button">Send</button>
+  </div>
 </div>
 
 <script>
@@ -61,24 +220,86 @@
   const closeChatbot = document.getElementById("close-chatbot");
   const chatbotMessages = document.getElementById("chatbot-messages");
   const chatbotInput = document.getElementById("chatbot-input");
+  const sendButton = document.getElementById("send-button");
 
+  // Function to display messages in the chat interface
+  function displayMessage(text, sender) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('chat-message', sender);
+      messageElement.textContent = text;
+      chatbotMessages.appendChild(messageElement);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Scroll to the bottom
+  }
+
+  // Initial bot message when the chat opens
+  window.onload = () => {
+    // Only add initial message if chat is opened
+    // displayMessage("Hello! I am Agent 007. Type your passcode here.", 'bot');
+  };
+
+  // Function to send message to the Flask backend
+  async function sendMessageToBot(message) {
+      displayMessage(message, 'user'); // Display user's message immediately
+
+      try {
+          const response = await fetch('/message', { // This should match your Flask route
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ message: message })
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+              if (data.redirect) {
+                  // If the server sends a 'redirect' URL, navigate to it
+                  window.location.href = data.redirect;
+              } else if (data.message) {
+                  // Otherwise, display the bot's message
+                  displayMessage(data.message, 'bot');
+              }
+          } else {
+              console.error("Bot response indicated an error:", data.error);
+              displayMessage("An error occurred with the bot response.", 'bot');
+          }
+      } catch (error) {
+          console.error("Error sending message to bot:", error);
+          displayMessage("Could not reach the bot. Please try again.", 'bot');
+      }
+  }
+
+  // Toggle chatbot visibility
   chatbotToggle.onclick = () => {
-    chatbotContainer.style.display = "flex";
+    chatbotContainer.classList.add('open');
     chatbotToggle.style.display = "none";
+    // Add initial bot message when chat is opened
+    if (chatbotMessages.children.length === 0) { // Only if no messages yet
+        displayMessage("Hello! I am Agent 007. Type your passcode here.", 'bot');
+    }
   };
 
   closeChatbot.onclick = () => {
-    chatbotContainer.style.display = "none";
-    chatbotToggle.style.display = "block";
+    chatbotContainer.classList.remove('open');
+    chatbotToggle.style.display = "flex"; /* Change to flex for centering content */
   };
 
+  // Event listener for Enter key in the input field
   chatbotInput.addEventListener("keypress", function (e) {
     if (e.key === "Enter" && chatbotInput.value.trim()) {
-      const userMsg = chatbotInput.value;
-      chatbotMessages.innerHTML += `<div class="chat-message user">🧍 ${userMsg}</div>`;
-      chatbotMessages.innerHTML += `<div class="chat-message bot">🤖 I'll get back to you soon...</div>`;
+      const userMsg = chatbotInput.value.trim();
+      sendMessageToBot(userMsg);
       chatbotInput.value = "";
-      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+  });
+
+  // Event listener for the Send button
+  sendButton.addEventListener("click", () => {
+    const userMsg = chatbotInput.value.trim();
+    if (userMsg) {
+      sendMessageToBot(userMsg);
+      chatbotInput.value = "";
     }
   });
 </script>

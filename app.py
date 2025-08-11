@@ -179,4 +179,4 @@ if __name__ == "__main__":
     # Run the Flask app
     # host='0.0.0.0' makes it accessible externally (e.g., in a Docker container or server)
     # debug=False for production hosting
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(host='0.0.0.0', port=port)

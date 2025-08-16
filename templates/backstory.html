@@ -46,7 +46,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('BackStory_Edited_1.png'); /* Path to your image */
+            background-image: url('static/backstory.png'); /* Path to your image */
             background-size: contain; /* Ensures the entire image is visible, no cropping */
             background-repeat: no-repeat; /* Prevents the image from repeating if there's empty space */
             background-position: center; /* Center the image */
@@ -59,7 +59,7 @@
         @media (max-width: 768px) {
             #video-container iframe {
                 width: 100%; /* Adjust width for smaller screens */
-                height: auto; /* Auto height to maintain aspect ratio */
+                height: 100%; /* Auto height to maintain aspect ratio */
             }
         }
     </style>
@@ -83,7 +83,7 @@
             const videoElement = videoContainer.querySelector('iframe');
 
             // Duration to show the video before transitioning, in milliseconds (e.g., 60 seconds for 1 minute)
-            const videoDisplayDuration = 60000; // 1 minute
+            const videoDisplayDuration = 2000; // 1 minute
 
             // Set a timeout to trigger the transition
             setTimeout(() => {

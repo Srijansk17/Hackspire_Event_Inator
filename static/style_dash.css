@@ -87,6 +87,7 @@ body.dashboard {
 }
 
 input[type="text"] {
+  color: black;
   padding: 10px;
   flex: 1;
   border: none;

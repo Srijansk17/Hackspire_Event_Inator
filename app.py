@@ -27,8 +27,8 @@ def init_db():
             conn.close()
 
 # ----------- Chatbot Logic Configuration -----------
-CORRECT_PASSCODE = "~abc~def~ghi"
-MESSAGES_FILE = 'msgs.txt' # Path to your messages file
+CORRECT_PASSCODE = "~don't~join~pes"
+MESSAGES_FILE = 'msgs.txt' # Path to your messa ges file
 
 # Load messages from msgs.txt
 def load_random_messages():
@@ -179,4 +179,4 @@ if __name__ == "__main__":
     # Run the Flask app
     # host='0.0.0.0' makes it accessible externally (e.g., in a Docker container or server)
     # debug=False for production hosting
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=False)

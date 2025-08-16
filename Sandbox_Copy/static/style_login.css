@@ -1,0 +1,71 @@
+body.login-page {
+  margin: 0;
+  padding: 0;
+  background: url('bg_1.png') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white;
+}
+
+.login-wrapper {
+  background: rgba(0, 0, 0, 0.75);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 25px crimson;
+  width: 90%;
+  max-width: 400px;
+}
+
+.login-container h1 {
+  text-align: center;
+  color: crimson;
+  margin-bottom: 30px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #ddd;
+}
+
+input[type="text"],
+input[type="password"] {
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  background: #333;
+  color: white;
+  outline: none;
+}
+
+button[type="submit"] {
+  padding: 12px;
+  background-color: crimson;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: darkred;
+}
+
+.error-msg {
+  color: red;
+  text-align: center;
+  margin-top: 15px;
+}

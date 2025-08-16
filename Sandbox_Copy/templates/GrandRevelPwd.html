@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BREACHING VAULT...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --terminal-bg: #1a1a1a;
+            --text-color: #e0e0e0;
+            --accent-color: #ff1a1a;
+            --glow-color: rgba(255, 26, 26, 0.6);
+            --secondary-text: #666;
+            --warning-color: #ff4d4d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 900px;
+            height: 600px;
+            background-color: var(--terminal-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            box-shadow: 0 0 25px var(--glow-color), 0 0 10px var(--glow-color) inset;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .stage {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        #hacking-sequence {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .terminal-header {
+            color: var(--accent-color);
+            text-align: center;
+            font-size: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--secondary-text);
+            animation: flicker 2s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 0 0 4px var(--glow-color), 0 0 11px var(--glow-color), 0 0 19px var(--glow-color);
+                color: var(--accent-color);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+                color: #fff;
+            }
+        }
+
+        .terminal-body {
+            display: flex;
+            gap: 1rem;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #main-log {
+            flex: 3;
+            background: rgba(0,0,0,0.2);
+            padding: 1rem;
+            overflow-y: auto;
+            font-size: 0.9rem;
+        }
+
+        #main-log p {
+            margin-bottom: 0.5em;
+            word-break: break-all;
+        }
+
+        .log-entry .status {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        #sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sidebar-widget {
+            background: rgba(0,0,0,0.2);
+            padding: 0.5rem;
+            overflow: hidden;
+        }
+
+        .widget-title {
+            color: var(--secondary-text);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+        
+        #system-vitals {
+            font-size: 0.9rem;
+        }
+        #system-vitals p {
+            margin-bottom: 0.5rem;
+        }
+        #system-vitals span {
+            float: right;
+            font-weight: bold;
+        }
+        .warning {
+            color: var(--warning-color) !important;
+            text-shadow: 0 0 5px var(--warning-color);
+        }
+
+        #data-stream {
+            font-size: 0.8rem;
+            word-break: break-all;
+            color: var(--secondary-text);
+        }
+        
+        .progress-section {
+            padding-top: 1rem;
+            border-top: 1px solid var(--secondary-text);
+        }
+
+        #progress-bar-container {
+            width: 100%;
+            height: 25px;
+            background-color: #333;
+            border: 1px solid var(--secondary-text);
+            position: relative;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: var(--accent-color);
+            transition: width 10s linear;
+        }
+
+        #progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
+        }
+        
+        #vault-contents {
+            opacity: 0;
+            transition: opacity 2s ease-in;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #vault-contents .title {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            text-shadow: 0 0 15px var(--glow-color);
+            margin-bottom: 2rem;
+        }
+        
+        .placeholder-box {
+            border: 2px dashed var(--secondary-text);
+            padding: 4rem;
+            width: 80%;
+        }
+        
+        .placeholder-box p {
+            font-size: 1.2rem;
+            color: var(--secondary-text);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div id="hacking-sequence" class="stage">
+            <header class="terminal-header">
+                <p>HYDRA_BREACH_PROTOCOL v3.1.4</p>
+            </header>
+            <div class="terminal-body">
+                <div id="main-log"></div>
+                <div id="sidebar">
+                    <div class="sidebar-widget">
+                        <p class="widget-title">>_SYSTEM_VITALS</p>
+                        <div id="system-vitals">
+                            <p>CPU LOAD: <span id="cpu-load">0%</span></p>
+                            <p>MEM USAGE: <span id="mem-usage">0%</span></p>
+                            <p>SYS TEMP: <span id="sys-temp">0°C</span></p>
+                            <p>NET I/O: <span id="net-io">0 kb/s</span></p>
+                        </div>
+                    </div>
+                    <div class="sidebar-widget" style="flex-grow: 1;">
+                        <p class="widget-title">>_PACKET_STREAM_0XFF</p>
+                        <div id="data-stream"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="progress-section">
+                <div id="progress-bar-container">
+                    <div id="progress-bar"></div>
+                    <span id="progress-text">Awaiting Task...</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="vault-contents" class="stage">
+            <h1 class="title">ACCESS GRANTED</h1>
+            <div class="placeholder-box">
+                <!-- ADDITIONAL STUFF HERE HELLO -->
+                <p>DON'T PUT PINEAPPLES ON PIZZA</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const hackingStage = document.getElementById('hacking-sequence');
+        const vaultStage = document.getElementById('vault-contents');
+        const mainLog = document.getElementById('main-log');
+        const dataStream = document.getElementById('data-stream');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const cpuLoadEl = document.getElementById('cpu-load');
+        const memUsageEl = document.getElementById('mem-usage');
+        const sysTempEl = document.getElementById('sys-temp');
+        const netIoEl = document.getElementById('net-io');
+
+        let dataInterval, vitalsInterval;
+
+        function typeLog(message, status, delay) {
+            setTimeout(() => {
+                const entry = document.createElement('p');
+                entry.classList.add('log-entry');
+                entry.innerHTML = `${message} <span class="status">${status}</span>`;
+                mainLog.appendChild(entry);
+                mainLog.scrollTop = mainLog.scrollHeight;
+            }, delay);
+        }
+
+        function updateDataStream() {
+            const chars = 'abcdef0123456789';
+            let streamContent = '';
+            for (let i = 0; i < 150; i++) streamContent += chars.charAt(Math.floor(Math.random() * chars.length));
+            dataStream.textContent = streamContent;
+        }
+        
+        function updateVitals() {
+            let cpu = Math.random() * (100 - 90) + 90;
+            let mem = Math.random() * (98 - 85) + 85;
+            let temp = Math.random() * (95 - 75) + 75;
+            let net = Math.random() * (2500 - 800) + 800;
+
+            cpuLoadEl.textContent = `${cpu.toFixed(2)}%`;
+            memUsageEl.textContent = `${mem.toFixed(2)}%`;
+            sysTempEl.textContent = `${temp.toFixed(1)}°C`;
+            netIoEl.textContent = `${net.toFixed(0)} mb/s`;
+
+            cpuLoadEl.classList.toggle('warning', cpu > 95);
+            memUsageEl.classList.toggle('warning', mem > 95);
+            sysTempEl.classList.toggle('warning', temp > 90);
+        }
+        
+        function startProgressBar() {
+            let width = 0;
+            progressBar.style.width = '100%';
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    progressText.textContent = "DECRYPTION COMPLETE";
+                } else {
+                    width++;
+                    progressText.textContent = `DECRYPTING... ${width}%`;
+                }
+            }, 100);
+        }
+
+        function startHackingSequence() {
+            hackingStage.style.display = 'flex';
+            dataInterval = setInterval(updateDataStream, 100);
+            vitalsInterval = setInterval(updateVitals, 400);
+
+            typeLog('> Executing HYDRA_BREACH_PROTOCOL...', '[INITIATING]', 500);
+            typeLog('> Target IP: 10.255.7.1... Target Port: 443...', '[OK]', 1500);
+            typeLog('> Probing firewall...', '[DETECTED: "AEGIS" DEFENSE SYSTEM]', 2500);
+            typeLog('> Deploying rootkit "Spectre.dll" to exploit kernel vulnerability...', '[SUCCESS]', 4500);
+            typeLog('> Escalating privileges to ROOT...', '[ACCESS GRANTED]', 6000);
+            typeLog('> Navigating to secure directory: /var/vaults/', '[OK]', 7000);
+            typeLog('> Locating target file: "final_truth.dat"...', '[FOUND]', 8000);
+            typeLog('> Analyzing encryption layer...', '[TYPE: Cascade Encryption (AES-256/Serpent)]', 9000);
+
+            setTimeout(() => {
+                startProgressBar();
+                typeLog('> Initiating decryption... This may take some time.', '[IN PROGRESS]', 0);
+            }, 9500);
+            
+            typeLog('> KEY FOUND. Signature positive.', '[MATCH]', 20000);
+            typeLog('> Disengaging encryption locks...', '[COMPLETE]', 20500);
+            typeLog('> Accessing vault contents... STAND BY.', '[SUCCESS]', 21500);
+
+            setTimeout(() => {
+                clearInterval(dataInterval);
+                clearInterval(vitalsInterval);
+                
+                hackingStage.style.transition = 'opacity 1s ease-out';
+                hackingStage.style.opacity = '0';
+                
+                setTimeout(() => {
+                    hackingStage.style.display = 'none';
+                    vaultStage.style.display = 'flex';
+                    vaultStage.style.opacity = '1';
+                }, 1000);
+
+            }, 22500);
+        }
+
+        window.onload = startHackingSequence;
+    </script>
+</body>
+</html>

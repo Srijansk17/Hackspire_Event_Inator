@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Backstory - Murder Mystery</title>
+    <!-- Link to your existing static CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_dash.css') }}">
+    <!-- Tailwind CSS for modern styling -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Inter Font for a clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <!-- YouTube IFrame Player API - Required for controlling the video -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333; /* Dark background from style_dash.css */
+            color: #e2e8f0; /* Light text for consistency */
+            display: flex;
+            flex-direction: column; /* Allows content and buttons to stack */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0; /* Remove body padding so full screen elements can truly be full screen */
+            box-sizing: border-box;
+            overflow: hidden; /* Hide scrollbar initially for full-screen video/image */
+        }
+
+        /* Styles for the full-screen video and image overlays */
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw; /* Full viewport width */
+            height: 100vh; /* Full viewport height */
+            z-index: 9999; /* Ensure it's on top of everything */
+            background-color: black; /* Background behind video/image */
+            display: flex; /* For centering content */
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Prevent scrolling within the overlay */
+            transition: opacity 1s ease-out; /* For fading out effect */
+            opacity: 1; /* Initially visible */
+        }
+
+        .fullscreen-overlay.hidden {
+            opacity: 0;
+            pointer-events: none; /* Disable interaction when hidden */
+        }
+
+        /* YouTube iframe specific styling for full screen */
+        .fullscreen-overlay iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Image styling within its overlay */
+        .fullscreen-overlay img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Ensures the entire image is visible, letterboxing if aspect ratios differ */
+        }
+
+        /* Main backstory content container */
+        .backstory-container {
+            background-color: #444; /* Darker panel background, closer to style_dash.css panels */
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            max-width: 800px; /* Max width for content */
+            width: 100%;
+            text-align: center;
+            margin: auto; /* Center the container after transition */
+            opacity: 0; /* Hidden initially */
+            pointer-events: none; /* Disable interaction initially */
+            transition: opacity 1s ease-in; /* For fading in effect */
+            z-index: 1; /* Ensure it's below overlays initially */
+            position: relative; /* Needed for z-index to work against fixed elements */
+        }
+
+        .backstory-container.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .backstory-container h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #a0aec0; /* Lighter grey for heading */
+            margin-bottom: 1.5rem;
+        }
+
+        .backstory-content {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            color: #cbd5e0; /* Light text for readability */
+            margin-bottom: 2rem;
+            text-align: left; /* Align text left within content block */
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .button-group .btn {
+            padding: 0.75rem 1.5rem;
+            background-color: #4299e1; /* Vibrant blue button for action, consistent with dashboard */
+            color: white;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .button-group .btn:hover {
+            background-color: #3182ce;
+        }
+    </style>
+</head>
+<body>
+    <!-- Full-screen video overlay -->
+    <div id="fullscreen-video-overlay" class="fullscreen-overlay">
+        <div id="player"></div> <!-- YouTube player div will be embedded here by JS -->
+    </div>
+
+    <!-- Full-screen image overlay (initially hidden) -->
+    <div id="fullscreen-image-overlay" class="fullscreen-overlay hidden">
+        <!-- Corrected image path: Assumes backstory.jpg is in the static folder -->
+        <img src="{{ url_for('static', filename='backstory.jpg') }}" alt="Backstory Image">
+    </div>
+
+    <!-- Main backstory content (initially hidden) -->
+    <div class="backstory-container">
+        <h1>The Mysterious Backstory</h1>
+        
+        <div class="backstory-content">
+            <p>Welcome, Detective, to the chilling tale of the Hack_fest_ppl. The air hangs heavy with the scent of secrets and suspicion. Whispers abound in the hallowed halls of GJBC, where a festive gathering turned into a scene of unspeakable horror.</p>
+            <p>Our victim, the Great_great_hackfest_guy_who does, was found motionless in his study, a single, ornate dagger clutched in his hand. But was it suicide, or a meticulously planned murder? The answer lies hidden amongst the guests – a collection of eccentric characters, each with their own motives and shadowed pasts.</p>
+            <p>The night of the Revel was a tempest of laughter, music, and intrigue. Every smile, every conversation, every glance could hold a clue. Your task is to unravel the intricate web of deception, interrogate the suspects, and piece together the fragments of truth.</p>
+            <p>Remember, no detail is too small, no alibi too strong, and no secret too deeply buried. The fate of Blackwood Manor, and perhaps your own career, rests on your ability to uncover the true perpetrator of this heinous crime.</p>
+            <p>Begin your investigation. The clock is ticking...</p>
+        </div>
+
+        <div class="button-group">
+            <a href="{{ url_for('dashboard') }}" class="btn">Return to Dashboard</a>
+            <a href="#" class="btn">Next Clue (Placeholder)</a>
+        </div>
+    </div>
+
+    <script>
+        let player;
+        const videoOverlay = document.getElementById('fullscreen-video-overlay');
+        const imageOverlay = document.getElementById('fullscreen-image-overlay');
+        const backstoryContainer = document.querySelector('.backstory-container');
+
+        // This function is called automatically by the YouTube IFrame Player API
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                videoId: 'bhtV58RTXk8', // The YouTube Video ID
+                playerVars: {
+                    'autoplay': 1,        // Autoplay the video
+                    'controls': 0,        // Hide player controls
+                    'disablekb': 1,       // Disable keyboard controls
+                    'fs': 0,              // Disable fullscreen button
+                    'modestbranding': 1,  // Hide YouTube logo
+                    'rel': 0,             // Do not show related videos
+                    'showinfo': 0,        // Hide video title and uploader info
+                    'loop': 1,            // Loop the video
+                    'playlist': 'bhtV58RTXk8', // Must match videoId for looping a single video
+                    'enablejsapi': 1,     // Enable JavaScript API for events
+                    'mute': 1             // Mute the video to allow autoplay on most browsers
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // When the player is ready
+        function onPlayerReady(event) {
+            // Ensure the video plays (though autoplay is set, this is a good fallback)
+            event.target.playVideo();
+            // Initially, hide the main backstory content
+            backstoryContainer.classList.remove('visible');
+            document.body.style.overflow = 'hidden'; // Keep body overflow hidden during intro
+        }
+
+        // When the player's state changes (e.g., video ends)
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.ENDED) {
+                // 1. Video ended: Hide video overlay
+                videoOverlay.classList.add('hidden');
+
+                // 2. Show image overlay immediately
+                imageOverlay.classList.remove('hidden');
+
+                // 3. After a short delay, hide image and show main content
+                setTimeout(() => {
+                    imageOverlay.classList.add('hidden'); // Hide image overlay
+                    backstoryContainer.classList.add('visible'); // Show main content
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                }, 3000); // Display image for 3 seconds
+            }
+        }
+    </script>
+</body>
+</html>

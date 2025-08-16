@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Final Truth</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background similar to your site */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #e2e8f0; /* Light text color */
+        }
+        .container {
+            background-color: #2d3748; /* Slightly lighter dark background for the box */
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            max-width: 90%;
+        }
+        .title {
+            font-size: 2.5rem; /* Larger font for emphasis */
+            font-weight: 700;
+            color: #4299e1; /* A bright blue for contrast */
+            margin-bottom: 1.5rem;
+        }
+        .truth-text {
+            font-size: 1.875rem; /* Large text for the truth */
+            font-weight: 700;
+            color: #9f7aea; /* A vibrant purple */
+        }
+        .gif-container {
+            margin-top: 2rem;
+            border-radius: 0.5rem;
+            overflow: hidden; /* Ensures the GIF stays within rounded corners */
+        }
+        .gif-container img {
+            max-width: 100%;
+            height: auto;
+            display: block; /* Removes extra space below image */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Congratulations!</h1>
+        <p class="truth-text">The final Truth is:</p>
+        <p class="truth-text leading-tight">"Never gonna give you up"</p>
+        <div class="gif-container">
+            <!-- Rick Astley GIF - provides a fun easter egg -->
+            <img src="https://i.pinimg.com/originals/8a/39/03/8a390326148f845c0e26c23d56b7fde9.gif" alt="Rick Astley GIF" onerror="this.onerror=null;this.src='https://placehold.co/480x270/2d3748/e2e8f0?text=Never+Gonna+Give+You+Up';">
+        </div>
+        <p class="text-sm text-gray-400 mt-4">You've uncovered the ultimate secret!</p>
+    </div>
+</body>
+</html>

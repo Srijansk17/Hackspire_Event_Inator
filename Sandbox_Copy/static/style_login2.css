@@ -1,0 +1,110 @@
+body.login-page {
+  margin: 0;
+  padding: 0;
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fading background using ::before */
+body.login-page::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: url('bg_1.png') no-repeat center center fixed;
+  background-size: cover;
+  z-index: -1;
+  animation: fadeBackground 6s ease-in-out infinite;
+  opacity: 1;
+}
+
+@keyframes fadeBackground {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.75;  /* Still visible and bluish */
+  }
+}
+
+.login-wrapper {
+  background: rgba(0, 0, 0, 0.75);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 25px crimson;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  z-index: 1;
+
+  /* Animation */
+  animation: slideDown 1.5s ease-out forwards;
+  transform: translateY(-100px); /* Start offset */
+  opacity: 0;
+}
+
+@keyframes slideDown {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+.login-container h1 {
+  text-align: center;
+  color: crimson;
+  margin-bottom: 30px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #ddd;
+}
+
+input[type="text"],
+input[type="password"] {
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  background: #333;
+  color: white;
+  outline: none;
+}
+
+button[type="submit"] {
+  padding: 12px;
+  background-color: crimson;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: darkred;
+}
+
+.error-msg {
+  color: red;
+  text-align: center;
+  margin-top: 15px;
+}

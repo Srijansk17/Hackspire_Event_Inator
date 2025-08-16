@@ -1,0 +1,93 @@
+/* Homepage */
+body.homepage {
+  margin: 0;
+  padding: 0;
+  background: url('bg_home2.png') no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh;
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+.vertical-scan-line {
+  position: fixed;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to bottom, transparent, #00ffff, transparent);
+  box-shadow: 0 0 15px #00ffff;
+  animation: scan-vertical 4s linear infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes scan-vertical {
+  0% {
+    top: -3px;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+.scanner-overlay {
+  position: fixed;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background: linear-gradient(
+    rgba(255, 0, 0, 0) 0%,
+    rgba(255, 0, 0, 0.2) 50%,
+    rgba(255, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+  animation: scan 5s linear infinite;
+  z-index: 2; /* Keep it above background but below content */
+}
+
+@keyframes scan {
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+.homepage-container {
+  width: 80%; /* You can change to 90% or even 100% */
+  max-width: 1000px; /* Optional: max limit */
+  padding: 60px 40px; /* Increase padding for more space inside */
+  margin: 100px auto; /* Center vertically and horizontally */
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: semi-transparent background */
+  border-radius: 10px; /* Optional: rounded corners */
+  text-align: center;
+  color: #00ffff; /* Neon color */
+  font-size: 1.5rem; /* Optional: larger font */
+}
+
+
+.register-btn {
+  margin-top: 20px;
+  padding: 12px 30px;
+  font-size: 18px;
+  background-color: crimson;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+}
+
+/* Login Page Reuse */
+.login-container {
+  max-width: 400px;
+  margin: 100px auto;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 20px red;
+}

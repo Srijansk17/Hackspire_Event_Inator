@@ -55,6 +55,17 @@
             z-index: 5; /* Image is behind the video initially */
         }
 
+        /* Style for the clickable overlay */
+        .image-link-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 6; /* Ensure it's above the image but below the video initially */
+            display: none; /* Hidden by default, will be shown when image fades in */
+        }
+
         /* Responsive adjustments for smaller screens (Tailwind-like approach for responsiveness) */
         @media (max-width: 768px) {
             #video-container iframe {
@@ -75,11 +86,14 @@
     </div>
 
     <div id="backstory-image"></div>
+    <!-- Add an overlay div with a link -->
+    <a href="https://blood-bound-login.lovable.app/" target="_blank" class="image-link-overlay" id="backstory-link-overlay"></a>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const videoContainer = document.getElementById('video-container');
             const backstoryImage = document.getElementById('backstory-image');
+            const backstoryLinkOverlay = document.getElementById('backstory-link-overlay');
             const videoElement = videoContainer.querySelector('iframe');
 
             // Duration to show the video before transitioning, in milliseconds (e.g., 60 seconds for 1 minute)
@@ -92,6 +106,11 @@
 
                 // Start fading in the image simultaneously
                 backstoryImage.style.opacity = 1;
+
+                // After a short delay, make the link overlay visible
+                setTimeout(() => {
+                    backstoryLinkOverlay.style.display = 'block'; // Make the link overlay clickable
+                }, 1000); // This delay ensures the overlay appears after the image starts fading in
 
                 // After the fade transition (which is 2 seconds, as per CSS), hide the video container entirely
                 // This prevents it from potentially blocking interaction or being in the DOM unnecessarily

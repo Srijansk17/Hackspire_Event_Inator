@@ -132,9 +132,27 @@ def logout():
 def login2():
     return render_template('login2.html')
 
-@app.route("/backstory")
+@app.route('/story')
+def story():
+    return render_template('story.html')
+
+# Route for the image page
+@app.route('/backstory')
 def backstory():
-    return render_template("backstory.html")
+    return render_template('backstory.html')
+
+# Route for the backstory info page
+@app.route('/backstory_info')
+def backstory_info():
+    return render_template('backstory_info.html')
+
+# Route for the story page
+
+
+'''@app.route("/backstory")
+def backstory():
+    return render_template("backstory_info.html")
+    '''
 
 # New route for the special Grand Revel Passcode page
 @app.route('/GrandRevelPwd')

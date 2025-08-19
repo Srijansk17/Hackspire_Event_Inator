@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backstory Info</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      color: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+
+      /* ✅ Flask static background (make sure image name matches exactly) */
+      background: url("static/backstoryinfo.png") no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    /* Blinking horror-style title */
+    h1.blinking-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #e60000;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 
+        0 0 10px rgba(229, 0, 0, 0.7),
+        0 0 20px rgba(229, 0, 0, 0.5),
+        0 0 40px rgba(229, 0, 0, 0.3);
+      animation: blinkGlow 1.5s infinite alternate ease-in-out;
+      margin-bottom: 2rem;
+    }
+
+    @keyframes blinkGlow {
+      0% {
+        opacity: 1;
+        text-shadow: 
+          0 0 12px rgba(229, 0, 0, 0.8),
+          0 0 25px rgba(229, 0, 0, 0.6),
+          0 0 50px rgba(229, 0, 0, 0.4);
+      }
+      50% {
+        opacity: 0.7;
+        text-shadow: 
+          0 0 5px rgba(229, 0, 0, 0.4),
+          0 0 15px rgba(229, 0, 0, 0.2),
+          0 0 30px rgba(229, 0, 0, 0.1);
+      }
+      100% {
+        opacity: 1;
+        text-shadow: 
+          0 0 15px rgba(229, 0, 0, 1),
+          0 0 35px rgba(229, 0, 0, 0.8),
+          0 0 60px rgba(229, 0, 0, 0.5);
+      }
+    }
+
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #fff;
+      background: linear-gradient(145deg, #c91616, #600101);
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      text-decoration: none;
+      text-align: center;
+      min-width: 200px;
+    }
+
+    .btn:hover {
+      background: linear-gradient(145deg, #ff3333, #800000);
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(255, 0, 0, 0.5);
+    }
+
+    /* Story content styling */
+    .story {
+      max-width: 650px;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 0, 0, 0.4);
+      border-radius: 0.75rem;
+      box-shadow: inset 0 0 20px rgba(229, 62, 62, 0.2);
+      line-height: 1.6;
+      display: none; /* hidden by default */
+    }
+
+    .story.active {
+      display: block;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Blinking Horror Title -->
+  <h1 class="blinking-title">Backstory Access</h1>
+  <div class="btn-container">
+    <a href="{{ url_for('story') }}" class="btn">The Story</a>
+    <a href="{{ url_for('backstory') }}" class="btn">Image</a>
+  </div> 
+
+</body>
+</html>

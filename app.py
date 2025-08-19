@@ -132,6 +132,7 @@ def logout():
 def login2():
     return render_template('login2.html')
 
+# Route for the story page
 @app.route('/story')
 def story():
     return render_template('story.html')
@@ -141,12 +142,24 @@ def story():
 def backstory():
     return render_template('backstory.html')
 
+@app.route('/testimony_info')
+def testimony_info():
+    return render_template('testimony_info.html')
+
 # Route for the backstory info page
 @app.route('/backstory_info')
 def backstory_info():
     return render_template('backstory_info.html')
 
-# Route for the story page
+@app.route('/story_testimony')
+def story_testimony():
+    return render_template('story_testimony.html')
+
+@app.route('/testimony')
+def testimony():
+    return render_template('testimony.html')
+
+
 
 
 '''@app.route("/backstory")

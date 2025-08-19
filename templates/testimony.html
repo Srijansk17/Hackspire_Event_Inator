@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full Screen Video</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background: #000; /* Pure black background */
+      display: flex;
+      flex-direction: column; /* Stack elements vertically */
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden; /* Prevent scrolling */
+      position: relative;
+      color: #f5f5f5;
+    }
+
+    /* Container for the video to help with centering and responsiveness */
+    .video-container {
+      position: relative;
+      width: 100%;
+      height: 100vh; /* Make it take full viewport height */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Full-screen iframe styling */
+    .video-container iframe {
+      width: 100vw; /* Take full viewport width */
+      height: 100vh; /* Take full viewport height */
+      /* Object-fit ensures the video covers the area without distortion */
+      object-fit: cover;
+      position: absolute; /* Position absolutely to cover the container */
+      top: 0;
+      left: 0;
+      border: none; /* Remove default iframe border */
+      z-index: 0; /* Place behind the button */
+    }
+
+    /* Styling for the back button */
+    .btn-back {
+      position: absolute; /* Position relative to the body */
+      top: 20px; /* 20px from the top */
+      left: 20px; /* 20px from the left */
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      text-decoration: none;
+      background: linear-gradient(145deg, #c91616, #600101);
+      border-radius: 0.5rem;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      z-index: 10; /* Ensure button is above the video */
+    }
+
+    .btn-back:hover {
+      background: linear-gradient(145deg, #ff3333, #800000);
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(255, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="video-container">
+    <!-- YouTube Embed:
+         - bzIQfyCs23E is the video ID
+         - autoplay=1: Tries to auto-play (might be blocked by browser policies without user interaction)
+         - mute=1: Mutes the video, often required for autoplay to work
+         - controls=0: Hides YouTube's default controls (optional, remove if you want them)
+         - loop=1: Loops the video (optional)
+         - playlist=bzIQfyCs23E: Required for looping a single video
+         - disablekb=1: Disables keyboard controls (optional)
+         - modestbranding=1: Removes YouTube logo in control bar (optional)
+         - rel=0: Prevents related videos at the end (optional, often ignored by YouTube)
+         - showinfo=0: Hides video title and uploader (optional)
+    -->
+    <iframe
+      src="https://www.youtube.com/embed/bzIQfyCs23E?autoplay=1&mute=1&controls=0&loop=1&playlist=bzIQfyCs23E&disablekb=1&modestbranding=1&rel=0&showinfo=0"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    ></iframe>
+  </div>
+
+  <!-- Back button - links to your dashboard.html route -->
+  <!-- Assuming your dashboard is at '/', you can adjust the href to your actual dashboard route -->
+  <a href="{{ url_for('dashboard')}}" class="btn-back">⬅ Back to Dashboard</a>
+
+</body>
+</html>

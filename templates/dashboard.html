@@ -16,6 +16,18 @@
         font-family: 'Inter', sans-serif;
         /* Ensure body has relative positioning if not already */
         position: relative;
+        /* Added for background canvas */
+        overflow: hidden; /* Prevent scrollbars from canvas */
+    }
+
+    /* Canvas for the interactive mouse trails */
+    #bg-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* Place behind all other content */
     }
 
     #chatbot-toggle {
@@ -163,6 +175,9 @@
   </style>
 </head>
 <body class="dashboard">
+  <!-- Canvas for the mouse trail background -->
+  <canvas id="bg-canvas"></canvas>
+
   <div class="container">
     
     <!-- Left panel -->
@@ -235,6 +250,9 @@
   window.onload = () => {
     // Only add initial message if chat is opened
     // displayMessage("Hello! I am Agent 007. Type your passcode here.", 'bot');
+    
+    // Start the mouse trail animation on window load
+    animateMouseTrails(); 
   };
 
   // Function to send message to the Flask backend
@@ -302,6 +320,76 @@
       chatbotInput.value = "";
     }
   });
+
+
+  /* NEW CODE FOR MOUSE TRAILS BELOW */
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let mouseX = 0, mouseY = 0;
+  let trails = [];
+
+  // Set initial canvas size and handle resizing
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+  });
+
+  // Update mouse coordinates on movement
+  document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+  });
+
+  // Trail particle class
+  class Trail {
+      constructor(x, y) {
+          this.x = x;
+          this.y = y;
+          this.size = 10; // Initial size of the glow particle
+          this.alpha = 0.5; // Initial opacity
+      }
+
+      // Update particle properties for animation
+      update() {
+          this.size *= 0.96; // Shrink over time
+          this.alpha *= 0.96; // Fade out over time
+      }
+
+      // Draw the particle on the canvas
+      draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 0, 0, ${this.alpha})`; // Red glow
+          ctx.fill();
+      }
+  }
+
+  // Animation loop for mouse trails
+  function animateMouseTrails() {
+      // Clear the entire canvas each frame for fresh drawing
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Add a new trail particle at the current mouse position
+      trails.push(new Trail(mouseX, mouseY));
+
+      // Update and draw existing trail particles
+      for (let i = 0; i < trails.length; i++) {
+          trails[i].update();
+          trails[i].draw();
+
+          // Remove particles that have faded out to save performance
+          if (trails[i].alpha < 0.05) {
+              trails.splice(i, 1);
+              i--; // Adjust index after removing an element
+          }
+      }
+      requestAnimationFrame(animateMouseTrails); // Request next animation frame
+  }
+
+  // NOTE: The `animateMouseTrails` function is now called from `window.onload`
+  // alongside any other initializations you have there.
 </script>
 
 </body>

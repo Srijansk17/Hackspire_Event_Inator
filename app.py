@@ -27,7 +27,7 @@ def init_db():
             conn.close()
 
 # ----------- Chatbot Logic Configuration -----------
-CORRECT_PASSCODE = "~key~sos~986"
+CORRECT_PASSCODE = "~key~986~sos"
 MESSAGES_FILE = 'msgs.txt' # Path to your messa ges file
 
 # Load messages from msgs.txt

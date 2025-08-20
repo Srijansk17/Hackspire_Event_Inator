@@ -6,22 +6,22 @@ c = conn.cursor()
 
 # Add users here
 users = [
-    ('Agent_P', 'Perry_the_Platypus'),
-    ('Admin1', '1two3fore5'),
-    ('Admin2', '1two3fore5'),
-    ('Admin3', '1two3fore5'),
-    ('Team_1','Password_for_team_1'),
-    ('Team_2','Password_for_team_2'),
-    ('Team_3','Password_for_team_3'),
-    ('Team_4','Password_for_team_4'),
-    ('Team_5','Password_for_team_5'),
-    ('Team_6','Password_for_team_6'),
-    ('Team_7','Password_for_team_7'),
-    ('Team_8','Password_for_team_8'),
-    ('Team_9','Password_for_team_9'),
-    ('Team_10','Password_for_team_10'),
-    ('Team_11','Password_for_team_11'),
-    ('Team_12','Password_for_team_12')
+    ('Admin', 'A_joy_ride'),
+    ('Team_001','65_joy_001'),
+    ('Team_002','65_joy_002'),
+    ('Team_003','65_joy_003'),
+    ('Team_004','65_joy_004'),
+    ('Team_005','65_joy_005'),
+    ('Team_006','65_joy_006'),
+    ('Team_007','65_joy_007'),
+    ('Team_008','65_joy_008'),
+    ('Team_009','65_joy_009'),
+    ('Team_010','65_joy_010'),
+    ('Team_011','65_joy_011'),
+    ('Team_012','65_joy_012'),
+    ('Team_013','65_joy_013'),
+    ('Team_014','65_joy_014'),
+    ('Team_015','65_joy_015')
 ]
 
 for username, password in users:

@@ -34,9 +34,9 @@
         }
 
         .container {
-            width: 95%;
-            max-width: 900px;
-            height: 600px;
+            width: 90%; /* Increased width */
+            max-width: 1200px; /* Increased max-width */
+            height: 800px; /* Increased height */
             background-color: var(--terminal-bg);
             border: 2px solid var(--accent-color);
             border-radius: 8px;
@@ -188,6 +188,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: relative; /* Added for positioning the fullscreen button */
         }
         
         #vault-contents .title {
@@ -199,13 +200,41 @@
         
         .placeholder-box {
             border: 2px dashed var(--secondary-text);
-            padding: 4rem;
-            width: 80%;
+            padding: 1rem; /* Adjusted padding to accommodate PDF */
+            width: 90%; /* Adjusted width for the PDF viewer */
+            height: 70%; /* Adjusted height for the PDF viewer */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Ensure content doesn't overflow */
+            background-color: var(--bg-color); /* Added background for fullscreen */
         }
         
-        .placeholder-box p {
-            font-size: 1.2rem;
-            color: var(--secondary-text);
+        .placeholder-box embed {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Fullscreen button styles */
+        #fullscreen-btn {
+            position: absolute;
+            top: 7.5rem; /* Position below the title */
+            right: 5.5%; /* Align with the placeholder box edge */
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: 1px solid var(--accent-color);
+            padding: 8px 16px;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 100;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #fullscreen-btn:hover {
+            background-color: transparent;
+            color: var(--accent-color);
         }
 
     </style>
@@ -214,6 +243,7 @@
 
     <div class="container">
 
+        <!-- Hacking sequence stage -->
         <div id="hacking-sequence" class="stage">
             <header class="terminal-header">
                 <p>HYDRA_BREACH_PROTOCOL v3.1.4</p>
@@ -244,17 +274,21 @@
             </div>
         </div>
 
+        <!-- Vault contents stage -->
         <div id="vault-contents" class="stage">
             <h1 class="title">ACCESS GRANTED</h1>
-            <div class="placeholder-box">
-                <!-- ADDITIONAL STUFF HERE HELLO -->
-                <p>DON'T PUT PINEAPPLES ON PIZZA</p>
+            <!-- Added a button to toggle fullscreen for the PDF container -->
+            <button id="fullscreen-btn">Fullscreen</button>
+            <div class="placeholder-box" id="pdf-container">
+                <!-- Changed from a <p> tag to an <embed> tag for PDF -->
+                <embed src="{{ url_for('The_Final_Report') }}" type="application/pdf" />
             </div>
         </div>
 
     </div>
 
     <script>
+        // --- Element Selectors ---
         const hackingStage = document.getElementById('hacking-sequence');
         const vaultStage = document.getElementById('vault-contents');
         const mainLog = document.getElementById('main-log');
@@ -265,8 +299,13 @@
         const memUsageEl = document.getElementById('mem-usage');
         const sysTempEl = document.getElementById('sys-temp');
         const netIoEl = document.getElementById('net-io');
+        // New elements for fullscreen functionality
+        const pdfContainer = document.getElementById('pdf-container');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
 
         let dataInterval, vitalsInterval;
+
+        // --- Hacking Animation Functions ---
 
         function typeLog(message, status, delay) {
             setTimeout(() => {
@@ -338,6 +377,7 @@
             typeLog('> Disengaging encryption locks...', '[COMPLETE]', 20500);
             typeLog('> Accessing vault contents... STAND BY.', '[SUCCESS]', 21500);
 
+            // Transition to the vault view
             setTimeout(() => {
                 clearInterval(dataInterval);
                 clearInterval(vitalsInterval);
@@ -354,6 +394,36 @@
             }, 22500);
         }
 
+        // --- Fullscreen Functionality ---
+
+        // Event listener for the fullscreen button click
+        fullscreenBtn.addEventListener('click', () => {
+            // Check if an element is currently in fullscreen
+            if (!document.fullscreenElement) {
+                // If not, request fullscreen for the PDF container
+                pdfContainer.requestFullscreen().catch(err => {
+                    // Log any errors that occur
+                    console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+                });
+            } else {
+                // If already in fullscreen, exit fullscreen
+                document.exitFullscreen();
+            }
+        });
+
+        // Event listener to detect changes in fullscreen status (e.g., user pressing ESC)
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                // If an element is in fullscreen, update the button text
+                fullscreenBtn.textContent = 'Exit Fullscreen';
+            } else {
+                // If not in fullscreen, revert the button text
+                fullscreenBtn.textContent = 'Fullscreen';
+            }
+        });
+
+
+        // --- Initializer ---
         window.onload = startHackingSequence;
     </script>
 </body>

@@ -1,6 +1,6 @@
 import os
 import random
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, send_from_directory, url_for, session, jsonify
 import sqlite3
 
 app = Flask(__name__)
@@ -27,7 +27,7 @@ def init_db():
             conn.close()
 
 # ----------- Chatbot Logic Configuration -----------
-CORRECT_PASSCODE = "~don't~join~pes"
+CORRECT_PASSCODE = "~key~sos~986"
 MESSAGES_FILE = 'msgs.txt' # Path to your messa ges file
 
 # Load messages from msgs.txt
@@ -158,6 +158,32 @@ def story_testimony():
 @app.route('/testimony')
 def testimony():
     return render_template('testimony.html')
+
+@app.route('/The_Final_Report')
+def The_Final_Report():
+    """Serves the PDF file from the 'static' folder."""
+    try:
+        # send_from_directory is a secure way to send files from a directory.
+        return send_from_directory(
+            'static',  # The directory where the file is stored
+            'The_Final_Report.pdf',  # The name of the file
+            as_attachment=False  # Set to False to display it in the browser
+        )
+    except FileNotFoundError:
+        return "Error: File not found.", 404
+
+@app.route('/The_Truth')
+def The_Truth():
+    """Serves the PDF file from the 'static' folder."""
+    try:
+        # send_from_directory is a secure way to send files from a directory.
+        return send_from_directory(
+            'static',  # The directory where the file is stored
+            'The_Truth.pdf',  # The name of the file
+            as_attachment=False  # Set to False to display it in the browser
+        )
+    except FileNotFoundError:
+        return "Error: File not found.", 404
 
 
 

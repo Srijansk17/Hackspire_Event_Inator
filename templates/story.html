@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Story</title>
+  <title>The Story - PDF View</title>
   <style>
     body {
       margin: 0;
@@ -48,27 +48,45 @@
       25%, 75% { opacity: 0; }
     }
 
-    .story-box {
+    /* Style for the PDF viewer container */
+    .pdf-viewer-container {
       max-width: 800px;
-      padding: 2rem;
+      width: 90%; /* Make it responsive */
+      height: 70vh; /* Adjust height as needed */
+      padding: 1rem;
       background: rgba(0, 0, 0, 0.8);
       border: 1px solid rgba(255, 0, 0, 0.4);
       border-radius: 0.75rem;
       box-shadow: inset 0 0 25px rgba(229, 62, 62, 0.25);
-      line-height: 1.7;
-      font-size: 1.1rem;
       animation: fadeIn 1.2s ease-in-out;
       z-index: 2;
       position: relative;
+      display: flex; /* Use flexbox for centering iframe */
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Style for the iframe to embed PDF */
+    .pdf-viewer-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none; /* Remove iframe border */
     }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    .btn-back {
+    
+    .button-container {
       margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      z-index: 2;
+      position: relative;
+    }
+
+    .btn {
       display: inline-block;
       padding: 0.8rem 2rem;
       font-size: 1rem;
@@ -78,11 +96,11 @@
       background: linear-gradient(145deg, #c91616, #600101);
       border-radius: 0.5rem;
       transition: all 0.3s ease-in-out;
-      z-index: 2;
-      position: relative;
+      border: none;
+      cursor: pointer;
     }
 
-    .btn-back:hover {
+    .btn:hover {
       background: linear-gradient(145deg, #ff3333, #800000);
       transform: scale(1.05);
       box-shadow: 0 6px 16px rgba(255, 0, 0, 0.5);
@@ -137,19 +155,18 @@
 
   <h1 id="main-header">The Story</h1>
 
-  <div class="story-box">
-    <p>
-      The shadows whispered of a past long forgotten.  
-      In the silence of a blood-stained room, secrets were carved into walls and written in crimson.  
-      Each clue left behind is not random—it’s a breadcrumb trail leading deeper into the mind of the killer.  
-    </p>
-    <p>
-      But the story isn’t just about the victim—it’s about control, obsession, and a message that was meant to be found.  
-      Will you uncover the truth before time runs out? Or will the story consume you, just as it consumed the last soul?  
-    </p>
+  <!-- PDF Viewer Container -->
+  <div class="pdf-viewer-container" id="pdf-container">
+    <!-- Replace 'path/to/your/document.pdf' with the actual path to your PDF file -->
+    <iframe src="{{ url_for('The_Truth') }}"" type="application/pdf" width="100%" height="100%">
+      This browser does not support PDFs. Please download the PDF to view it: <a href="path/to/your/document.pdf">Download PDF</a>
+    </iframe>
   </div>
 
-  <a href="backstory_info.html" class="btn-back">⬅ Back</a>
+  <div class="button-container">
+    <a href="{{ url_for('backstory_info') }}" class="btn">⬅ Back</a>
+    <button id="fullscreen-btn" class="btn">Fullscreen</button>
+  </div>
 
   <script>
     setTimeout(() => {
@@ -173,7 +190,6 @@
         span.style.color = colors[Math.floor(Math.random() * colors.length)];
         const duration = Math.random() * 5 + 5; 
         const delay = Math.random() * 10;
-        // FIX: Changed single quotes to backticks for template literals
         span.style.animationDuration = `${duration}s, 3s`;
         span.style.animationDelay = `${delay}s, ${Math.random()}s`;
         bgLayer.appendChild(span);
@@ -197,11 +213,40 @@
         q.style.left = Math.random() * (screenW - 200) + "px";
         const duration = Math.random() * 6 + 6; // 6–12s fall
         const delay = Math.random() * 10;
-        // FIX: Changed single quotes to backticks for template literals
         q.style.animationDuration = `${duration}s, 6s`;
         q.style.animationDelay = `${delay}s, ${Math.random()}s`;
         quotesLayer.appendChild(q);
     }
+
+    // Fullscreen functionality
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    const pdfContainer = document.getElementById('pdf-container');
+
+    fullscreenBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        if (pdfContainer.requestFullscreen) {
+          pdfContainer.requestFullscreen();
+        } else if (pdfContainer.mozRequestFullScreen) { /* Firefox */
+          pdfContainer.mozRequestFullScreen();
+        } else if (pdfContainer.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+          pdfContainer.webkitRequestFullscreen();
+        } else if (pdfContainer.msRequestFullscreen) { /* IE/Edge */
+          pdfContainer.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+            fullscreenBtn.textContent = 'Exit Fullscreen';
+        } else {
+            fullscreenBtn.textContent = 'Fullscreen';
+        }
+    });
   </script>
 
 </body>

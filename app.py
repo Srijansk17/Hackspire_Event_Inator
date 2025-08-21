@@ -197,7 +197,7 @@ def backstory():
 @app.route('/GrandRevelPwd')
 def grand_revel_pwd():
     return render_template('GrandRevelPwd.html')
-
+'''
 # Bot message handling route
 # This route receives POST requests from your chatbot's frontend
 @app.route('/message', methods=['POST'])
@@ -225,6 +225,53 @@ def handle_message():
         response_text = "Try harder, this is a passcode for top secret stuff"
         print(f"No match. Sending: {response_text}")
         return jsonify(success=True, message=response_text)
+'''
+# Bot message handling route
+# This route receives POST requests from your chatbot's frontend
+@app.route('/message', methods=['POST'])
+def handle_message():
+    data = request.get_json() # Get JSON data from the request body
+    received_msg = data.get('message', '').strip() # Extract the 'message' field and strip whitespace
+    
+    response_text = ""
+
+    # --- MODIFIED LOGIC ---
+    # 1. Get the set of correct tokens
+    # We use filter(None, ...) to remove empty strings that result from splitting by '~'
+    correct_tokens = set(filter(None, CORRECT_PASSCODE.split('~')))
+    
+    # 2. Get the set of tokens from the user's message
+    received_tokens = set(filter(None, received_msg.split('~')))
+
+    # 3. Check for an exact match first
+    if received_msg == CORRECT_PASSCODE:
+        # Exact match: Instruct the client-side JavaScript to redirect
+        print("Correct passcode received. Instructing client to redirect.")
+        # Return a JSON response with a 'redirect' URL
+        return jsonify(success=True, redirect=url_for('grand_revel_pwd'))
+    
+    # 4. NEW: Check if the tokens are correct but jumbled
+    elif correct_tokens == received_tokens:
+        response_text = "Try juggling the tokens"
+        print(f"Jumbled passcode received. Sending hint: {response_text}")
+        return jsonify(success=True, message=response_text)
+
+    # 5. Check for a partial match (original logic)
+    elif received_msg.startswith("~") and "~" in received_msg[1:]: # Checks for '~' followed by another '~'
+        if RANDOM_MESSAGES:
+            response_text = random.choice(RANDOM_MESSAGES)
+        else:
+            response_text = "You're close, but no hints loaded yet!" # Fallback if msgs.txt is empty
+        print(f"Partial match. Sending random message: {response_text}")
+        return jsonify(success=True, message=response_text)
+    
+    # 6. If none of the above, it's an incorrect attempt
+    else:
+        # No match or invalid format
+        response_text = "Try harder, this is a passcode for top secret stuff"
+        print(f"No match. Sending: {response_text}")
+        return jsonify(success=True, message=response_text)
+
 
 
 if __name__ == "__main__":

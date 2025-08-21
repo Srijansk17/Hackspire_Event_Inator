@@ -212,6 +212,7 @@ def handle_message():
         print("Correct passcode received. Instructing client to redirect.")
         # Return a JSON response with a 'redirect' URL
         return jsonify(success=True, redirect=url_for('grand_revel_pwd'))
+        
     elif received_msg.startswith("~") and "~" in received_msg[1:]: # Checks for '~' followed by another '~'
         # Partial match: message starts with '~' and contains at least one other '~'
         if RANDOM_MESSAGES:

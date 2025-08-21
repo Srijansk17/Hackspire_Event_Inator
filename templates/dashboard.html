@@ -269,14 +269,6 @@
           });
 
           const data = await response.json();
-          print("1. ",data)
-          print("\n")
-          print("2. ", data.success)
-          print("\n")
-          print("3. ", data.redirect)
-          print("\n")
-          print("4. ",data.message)
-          print("\n")
           if (data.success) {
               if (data.redirect) {
                   // If the server sends a 'redirect' URL, navigate to it

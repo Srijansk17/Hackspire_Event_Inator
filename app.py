@@ -166,7 +166,7 @@ def The_Final_Report():
         # send_from_directory is a secure way to send files from a directory.
         return send_from_directory(
             'static',  # The directory where the file is stored
-            'The_Final_Report.pdf',  # The name of the file
+            'The_Truth.pdf',  # The name of the file
             as_attachment=False  # Set to False to display it in the browser
         )
     except FileNotFoundError:
@@ -179,7 +179,7 @@ def The_Truth():
         # send_from_directory is a secure way to send files from a directory.
         return send_from_directory(
             'static',  # The directory where the file is stored
-            'The_Truth.pdf',  # The name of the file
+            'The_Final_report.pdf',  # The name of the file
             as_attachment=False  # Set to False to display it in the browser
         )
     except FileNotFoundError:
